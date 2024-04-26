@@ -33,7 +33,7 @@ def check(guess):
                       print("Points Per Game: Far")
 
                   # if 3P% is within 0.2
-                  if abs(float(single[13]) - float(player[13])) <= 0.2:
+                  if abs(float(single[14]) - float(player[14])) <= 0.2:
                       print("3 Point Percentage: Close")
                   else:
                       print("3 Point Percentage: Far")
@@ -62,36 +62,59 @@ list_of_all_players = []
 
 for line in data:
       list_of_all_players.append(line)
+      # if player is not in list of players
+      if line not in list_of_players:
+        list_of_all_players.append(line)
 
   # intro message
-print("\n\n\nWelcome to this basketball guessing game!\nAll possible players have a PPG of 15 or higher in the 2021-2022 season. You will be given 4 hints at the start of the game and can \nchoose to get one more hint by typing 'hint' instead of a player.\n")
-print("\n\n\nSelect difficulty you want this game to be played on. \n\n1. Easy (Over 15 PPG) \n2. Medium (5-15 PPG) \n3. Hard (Less than 5 PPG) \n\nType the number of the difficulty you want to play on.")
+print("\n\n\nWelcome to this basketball guessing game!\nAll possible players have a PPG of 15 or higher in the 2021-2022 season. You will be given 4 hints at the start of the game and \n can choose to get one more hint by typing 'hint' instead of a player.\n")
+print("\n\n\nSelect difficulty you want this game to be played on. \n\n1. Easy (PTS + REB + AST) \n2. Medium (Above 15 PPG) \n3. Hard (5-15 PPG) \n4. Impossible (Less than 5 PPG) \n\nType the number of the difficulty you want to play on.")
 difficulty = int(input("----------------------------------------------------------------------------\n"))
 
   # iterate through csv
 for line in data:
       # pulls out 2021-2022 players
-      if difficulty == 1:
+    if difficulty == 1:
+      if line[30] == "2021-2022" and float(line[29]) + float(line[24]) + float(line[23]) >= 15:
+      # no duplicates
+        if line not in list_of_players:
+          list_of_players.append(line)
+    elif difficulty == 2:
           if line[30] == "2021-2022" and float(line[29]) > 15:
               # no duplicates
               if line not in list_of_players:
-                  list_of_players.append(line)
-      elif difficulty == 2:
+                  list_of_players.append(line)    
+    elif difficulty == 3:
           if line[30] == "2021-2022" and float(line[29]) <= 15 and float(line[29]) >= 5:
               # no duplicates
               if line not in list_of_players:
                   list_of_players.append(line)
 
-      elif difficulty == 3:
+    elif difficulty == 4:
           if line[30] == "2021-2022" and float(line[29]) < 5:
               # no duplicates
               if line not in list_of_players:
                   list_of_players.append(line)
+      
+
+      
 
   # get a random player from the list of players
 player = random.choice(list_of_players)
 
-print(f"- Position: {player[2]}\n- Age: {player[3]}\n- 3 Point Percentage: {player[13]}\n- Points Per Game: {player[29]}")
+if difficulty == 1:
+  print(f"- Position: {player[2]}\n- Age: {player[3]}\n- 3 Point Percentage: {player[13]}\n- Total PPG, APG, & RPG: {player[29]} + {player[24]} + {player[23]}")
+elif difficulty == 2:
+  print(f"- Position: {player[2]}\n- Age: {player[3]}\n- 3 Point Percentage: {player[13]}\n- Points Per Game: {player[29]}")
+elif difficulty == 3:
+  print(f"- Position: {player[2]}\n- Age: {player[3]}\n- 3 Point Percentage: {player[13]}\n- Points Per Game: {player[29]}")
+elif difficulty == 4:
+  print(f"- Position: {player[2]}\n- Age: {player[3]}\n- 3 Point Percentage: {player[13]}\n- Points Per Game: {player[29]}")
+
+else:
+  # print("Invalid Input")
+  print()
+
 
   # set variables
 guesses = 4
