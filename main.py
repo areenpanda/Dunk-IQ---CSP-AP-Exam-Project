@@ -61,7 +61,7 @@ list_of_players = []
 list_of_all_players = []
 
 for line in data:
-      list_of_all_players.append(line)
+  if line[30] == "2021-2022":
       # if player is not in list of players
       if line not in list_of_players:
         list_of_all_players.append(line)
